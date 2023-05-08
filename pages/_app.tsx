@@ -5,6 +5,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CacheProvider, EmotionCache } from "@emotion/react";
 import CssBaseline from "@mui/material/CssBaseline";
+import { S3Provider } from "src/context/S3provider";
 import createEmotionCache from "src/emotion-cache/emotionCache";
 import "../styles/globals.scss";
 
@@ -37,7 +38,9 @@ export default function App(props: IProps) {
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <Component {...pageProps} />
+        <S3Provider>
+          <Component {...pageProps} />
+        </S3Provider>
       </ThemeProvider>
     </CacheProvider>
   );
