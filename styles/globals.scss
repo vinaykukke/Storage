@@ -1,3 +1,8 @@
+:root {
+  --background-dark: linear-gradient(to bottom, #000000, #000428, #004e92);
+  --background-light: linear-gradient(to bottom, #ffffff, #6dd5fa, #2980b9);
+}
+
 html,
 body {
   padding: 0;
@@ -21,6 +26,16 @@ a {
   }
   body {
     color: white;
-    background: black;
+    background: var(--background-dark);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  html {
+    color-scheme: light;
+  }
+  body {
+    color: black;
+    background: var(--background-light);
   }
 }
