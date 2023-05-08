@@ -1,0 +1,6 @@
+{
+  "AllowedHeaders": ["*"],
+  "AllowedMethods": ["PUT", "GET", "POST", "OPTIONS"],
+  "AllowedOrigins": ["*"],
+  "ExposeHeaders": ["ETag"]
+}
