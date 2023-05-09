@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { ListObjectsCommand, ListObjectsOutput } from "@aws-sdk/client-s3";
+import {
+  // HeadObjectCommand,
+  ListObjectsCommand,
+  ListObjectsOutput,
+} from "@aws-sdk/client-s3";
 import Head from "next/head";
 import styles from "../styles/Home.module.scss";
 import { useS3 } from "src/context/S3provider";
@@ -16,12 +20,11 @@ export default function Home() {
       const params = {
         Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET,
         Delimiter: "/",
-        // Key: "D004_C015_0425A1_002.R3D",
       };
       try {
         const command = new ListObjectsCommand(params);
         const res = await s3.send(command);
-        // const str = await res.Body.transformToString();
+
         if (res.Contents?.length > 0) setFiles(res.Contents);
       } catch (error) {
         console.error(error);
@@ -31,6 +34,22 @@ export default function Home() {
 
     api();
   }, []);
+
+  // useEffect(() => {
+  //   const api = async () => {
+  //     try {
+  //       const command = new HeadObjectCommand({
+  //         Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET,
+  //         Key: "D004_C015_0425A1_002.R3D",
+  //       });
+  //       const res = await s3.send(command);
+  //       console.log(res.Metadata);
+  //     } catch (error) {
+  //       console.error("Error Fetching object metadata: ", error);
+  //     }
+  //   };
+  //   api();
+  // }, []);
 
   return (
     <div className={styles.container}>

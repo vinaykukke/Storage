@@ -7,7 +7,7 @@
       "Principal": {
         "AWS": "arn:aws:iam::675387669564:user/usd_bot"
       },
-      "Action": ["s3:GetObject", "s3:PutObject"],
+      "Action": "s3:*",
       "Resource": "arn:aws:s3:::usd-vv/*"
     }
   ]

@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -5,16 +6,40 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Link } from "@mui/material";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { GetObjectCommand } from "@aws-sdk/client-s3";
+import { useS3 } from "src/context/S3provider";
 
 interface IProps {
   name: string;
 }
 
 export default function MediaCard(props: IProps) {
-  const getObjectURL = () => {
-    const bucket = process.env.NEXT_PUBLIC_AWS_BUCKET;
-    const region = process.env.NEXT_PUBLIC_AWS_REGION;
-    return `https://${bucket}.s3.${region}.amazonaws.com/${props.name}`;
+  const { s3 } = useS3();
+  const [url, setUrl] = useState("");
+  const downloadRef = useRef<HTMLAnchorElement>(null);
+
+  const getObjectURL = async () => {
+    const params = {
+      Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET,
+      Key: "D004_C015_0425A1_002.R3D",
+    };
+    const command = new GetObjectCommand(params);
+    const url = await getSignedUrl(s3, command, { expiresIn: 15 * 60 }); // expires in seconds
+    return url;
+  };
+
+  useEffect(() => {
+    /**
+     * Execute the click programatically
+     * So that the presigned url doesnt expire
+     */
+    if (url) downloadRef.current.click();
+  }, [url]);
+
+  const handleClick = async () => {
+    const url = await getObjectURL();
+    setUrl(url);
   };
 
   return (
@@ -37,10 +62,9 @@ export default function MediaCard(props: IProps) {
       </CardContent>
       <CardActions>
         <Button size="small">Share</Button>
-        <Button size="small">
-          <Link underline="none" href={getObjectURL()} download>
-            Download
-          </Link>
+        <Button size="small" onClick={handleClick}>
+          Download
+          <Link ref={downloadRef} underline="none" href={url} download />
         </Button>
       </CardActions>
     </Card>
