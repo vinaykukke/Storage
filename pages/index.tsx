@@ -63,11 +63,11 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        {loading && <div>Loading...</div>}
         <Typography variant="h2" mb={10}>
           Available Items
         </Typography>
         <Grid container spacing={{ xs: 2, md: 3 }}>
+          {loading && <div>Loading...</div>}
           {!loading &&
             files.length > 0 &&
             files.map((file, i) => (
