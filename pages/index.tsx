@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
-import { ListObjectsCommand } from "@aws-sdk/client-s3";
+import { ListObjectsCommand, ListObjectsOutput } from "@aws-sdk/client-s3";
 import Head from "next/head";
 import styles from "../styles/Home.module.scss";
 import { useS3 } from "src/context/S3provider";
+import MediaCard from "components/File";
 
 export default function Home() {
   const { s3 } = useS3();
   const [loading, setLoading] = useState(false);
+  const [files, setFiles] = useState<ListObjectsOutput["Contents"]>([]);
 
   useEffect(() => {
     const api = async () => {
       setLoading(true);
       const params = {
-        Bucket: "usd-vv",
+        Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET,
         Delimiter: "/",
         // Key: "D004_C015_0425A1_002.R3D",
       };
@@ -20,7 +22,7 @@ export default function Home() {
         const command = new ListObjectsCommand(params);
         const res = await s3.send(command);
         // const str = await res.Body.transformToString();
-        console.log(res);
+        if (res.Contents?.length > 0) setFiles(res.Contents);
       } catch (error) {
         console.error(error);
       }
@@ -43,7 +45,9 @@ export default function Home() {
 
       <main className={styles.main}>
         {loading && <div>Loading...</div>}
-        {!loading && <div>This is Main component</div>}
+        {!loading &&
+          files.length > 0 &&
+          files.map((file, i) => <MediaCard key={i} name={file.Key} />)}
       </main>
     </div>
   );
