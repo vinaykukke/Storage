@@ -8,6 +8,7 @@ import Head from "next/head";
 import styles from "../styles/Home.module.scss";
 import { useS3 } from "src/context/S3provider";
 import MediaCard from "components/File";
+import { Grid, Typography } from "@mui/material";
 
 export default function Home() {
   const { s3 } = useS3();
@@ -61,12 +62,20 @@ export default function Home() {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <main className={styles.main}>
         {loading && <div>Loading...</div>}
-        {!loading &&
-          files.length > 0 &&
-          files.map((file, i) => <MediaCard key={i} name={file.Key} />)}
+        <Typography variant="h2" mb={10}>
+          Available Items
+        </Typography>
+        <Grid container spacing={{ xs: 2, md: 3 }}>
+          {!loading &&
+            files.length > 0 &&
+            files.map((file, i) => (
+              <Grid item xs={12} sm={6} lg={4} xl={3} key={i}>
+                <MediaCard key={i} name={file.Key} />
+              </Grid>
+            ))}
+        </Grid>
       </main>
     </div>
   );

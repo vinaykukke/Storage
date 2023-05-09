@@ -22,7 +22,7 @@ export default function MediaCard(props: IProps) {
   const getObjectURL = async () => {
     const params = {
       Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET,
-      Key: "D004_C015_0425A1_002.R3D",
+      Key: props.name,
     };
     const command = new GetObjectCommand(params);
     const url = await getSignedUrl(s3, command, { expiresIn: 15 * 60 }); // expires in seconds
@@ -61,7 +61,9 @@ export default function MediaCard(props: IProps) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Share</Button>
+        <Button size="small" disabled>
+          Share
+        </Button>
         <Button size="small" onClick={handleClick}>
           Download
           <Link ref={downloadRef} underline="none" href={url} download />
