@@ -1,10 +1,14 @@
 import React, { useContext, useMemo } from "react";
 import { S3Client } from "@aws-sdk/client-s3";
 
-/** Auth Context */
-const S3Context = React.createContext(null);
+interface IContext {
+  s3: S3Client;
+}
 
-export const useS3 = () => useContext(S3Context);
+/** Auth Context */
+const S3Context = React.createContext<IContext | null>(null);
+
+export const useS3 = () => useContext<IContext>(S3Context);
 
 export const S3Provider = ({ children }) => {
   const s3 = useMemo(
@@ -19,7 +23,7 @@ export const S3Provider = ({ children }) => {
     []
   );
 
-  const value = {
+  const value: IContext = {
     s3,
   };
 
