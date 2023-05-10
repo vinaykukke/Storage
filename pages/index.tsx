@@ -8,7 +8,7 @@ import {
 import { Grid, Typography } from "@mui/material";
 import { useS3 } from "src/context/S3provider";
 import MediaCard from "src/components/File";
-import styles from "src/styles/Home.module.scss";
+import styles from "styles/Home.module.scss";
 
 export default function Home() {
   const { s3 } = useS3();
