@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
+import Head from "next/head";
 import {
   // HeadObjectCommand,
   ListObjectsCommand,
   ListObjectsOutput,
 } from "@aws-sdk/client-s3";
-import Head from "next/head";
-import styles from "../styles/Home.module.scss";
-import { useS3 } from "src/context/S3provider";
-import MediaCard from "components/File";
 import { Grid, Typography } from "@mui/material";
+import { useS3 } from "src/context/S3provider";
+import MediaCard from "src/components/File";
+import styles from "src/styles/Home.module.scss";
 
 export default function Home() {
   const { s3 } = useS3();
