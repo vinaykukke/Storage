@@ -46,10 +46,10 @@ export default function MediaCard(props: IProps) {
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
         component="img"
-        alt="green iguana"
+        alt={props.name}
         height="140"
         image="/video-icon.png"
-        title="Video"
+        title={props.name}
       />
       <CardContent>
         <Typography gutterBottom variant="h6" component="div">
